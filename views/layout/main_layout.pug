@@ -1,0 +1,31 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="/css/main.css")
+        block style 
+        title #{pagetitle}
+    body 
+        header(class='main-header')
+            nav(class="main-header__nav")
+                ul(class="main-header__item-list")
+                    li(class="main-header__item")
+                        a(class=(path==='/' ?'active':''), href="/") shop 
+                    li(class="main-header__item")
+                        a( href='/products',class=(path==='/products' ?'active':'')) Products
+                    li(class="main-header__item")
+                        a( href="/cart",class=(path==='/cart' ?'active':'')) cart
+                    li(class="main-header__item")
+                        a( href="/admin/pp",class=(path==='/admin/pp' ?'active':'')) Add Product 
+                    li(class="main-header__item")
+                        a( href="/admin/products",class=(path==='/admin/products' ?'active':'')) Admin Products
+
+
+
+
+
+        block content 
+    
+        

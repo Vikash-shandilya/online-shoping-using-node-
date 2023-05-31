@@ -1,0 +1,33 @@
+so tell me what is filtering i mean whn you use /admin/pp url then we dont have to specify 
+that in router/admin.js file we just write app.use('/admin',adminrouter ) explian how
+these thing work??
+why do we path
+why do we use ../ in path.join method
+what is benefit of router.get method instaed of router.use
+what is meaning of __dirname in path.join method
+what is use of expree.static middle and why it is needed 
+what will happen if two css file in html
+what does this line does "module.exports = path.dirname(require.main.filename);" and why
+do we use it??
+
+here why did we export it like that exports.router = router,exports.product = product;
+and in app.js why did we write it like this 'app.use("/admin", admindata.router);'
+
+what does this line do app.set("view engine", "pug");
+what does this line do app.set("views", __dirname + "/views");
+
+in shop.js does express already know that when we use res.render we are looking to render
+pug file ??
+
+in shop.pug why did we use each product in data to render data on screen and why we use 
+product .title in h1 of shop.pug;
+
+how we use the extend thing and made a main_layout file and how did we use that 
+
+how we dynamically render our title and active class inside our nav links 
+
+what is controller why we created every function in controller and render in router 
+why didnt we do that there only 
+
+what is model and we created class product 
+

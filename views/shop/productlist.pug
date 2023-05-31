@@ -1,0 +1,30 @@
+extends ../layout/main_layout.pug  
+
+block style
+    link(rel="stylesheet", href="/css/product.css")
+
+
+    
+block content 
+    main
+        if data.length > 0
+            div.grid
+                each product in data
+                    article.card.product-item
+                        header.card__header
+                            h1.product__title= product.title
+                        div.card__image
+                            img(src=product.imageUrl, alt=product.title)
+                        div.card__content
+                            h2.product__price $
+                            = product.price
+                            p.product__description= product.description
+                        div.card__actions
+                            button.btn Add to Cart
+
+                            
+        else
+            h1 No Products Found!
+
+
+

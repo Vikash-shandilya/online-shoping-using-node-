@@ -1,0 +1,34 @@
+extends layout/main_layout.pug 
+
+block style
+    link(rel="stylesheet", href="/css/product.css")
+
+
+    
+block content 
+    main 
+        h1 My Products
+        p List of all the products...
+        div(class='grid')
+            if data.length>0 
+                each item  in data
+                    
+
+                        article(class="card product-item")
+                            header(class="card__header")
+                                h1(class="product__title") #{item.title}
+                            
+                            div(class="card__image")
+                                img(src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.freedomcart.com%2Fimage%2Fcache%2Fcatalog%2Fdata%2FProducts%2Fcoke%2520can-700x700.jpg&tbnid=LKtDrHrv_Qbp7M&vet=12ahUKEwif26_no5L_AhVRjtgFHez9CCQQMygDegUIARDoAQ..i&imgrefurl=http%3A%2F%2Fwww.freedomcart.com%2FCocaCola-Coke-Can&docid=Y3SgjQKutp52yM&w=700&h=700&q=coke&ved=2ahUKEwif26_no5L_AhVRjtgFHez9CCQQMygDegUIARDoAQ", alt="coca-cola")
+
+                            div(class="card__content")
+                                h2(class="product__price") 200
+                                p(class="product__description") A very interesting drink!
+
+                            div(class="card__actions")
+                                button(class="btn") ADD to Cart
+            else 
+                h1 no product
+
+
+
