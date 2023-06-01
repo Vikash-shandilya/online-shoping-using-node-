@@ -7,7 +7,11 @@ const errorshow = require("../controller/error");
 router.get("/", shopcontroller.getIndex);
 router.get("/products", shopcontroller.getProducts);
 
+router.get("/products/:productid", shopcontroller.getproductid);
+
 router.get("/cart", shopcontroller.getCart);
+
+router.post("/cart", shopcontroller.posttocart);
 
 router.get("/orders", shopcontroller.getOrders);
 

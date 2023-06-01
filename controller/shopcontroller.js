@@ -11,6 +11,17 @@ exports.getProducts = (req, res, next) => {
   });
 };
 
+exports.getproductid = (req, res, next) => {
+  const productid = req.params.productid; //this productid is defined in router shop.js
+  Product.findbyid(productid, (productcontent) => {
+    res.render("shop/productdetail", {
+      product: productcontent,
+      pagetitle: "Product detail",
+      path: "/products",
+    });
+  });
+};
+
 exports.getIndex = (req, res, next) => {
   Product.fetchall((products) => {
     const parseddata = JSON.parse(products);
@@ -27,6 +38,12 @@ exports.getCart = (req, res, next) => {
     path: "/cart",
     pageTitle: "Your Cart",
   });
+};
+
+exports.posttocart = (req, res, next) => {
+  const productid = req.body.productid;
+  console.log(productid);
+  res.redirect("/cart");
 };
 
 exports.getOrders = (req, res, next) => {

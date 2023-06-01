@@ -22,7 +22,7 @@ exports.showproduct = (req, res, next) => {
     res.render("admin/products", {
       data: parseddata,
       path: "/",
-      pagetitle: "shop",
+      pagetitle: "adminproduct",
     });
   });
 };

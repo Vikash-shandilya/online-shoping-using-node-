@@ -1,5 +1,8 @@
 const path = require("path");
 const fs = require("fs");
+const { v4: uuidv4 } = require("uuid");
+//es6 syntax
+const uniqueId = uuidv4();
 
 module.exports = class Product {
   constructor(title, imageUrl, description, price) {
@@ -7,6 +10,7 @@ module.exports = class Product {
     this.imageUrl = imageUrl;
     this.description = description;
     this.price = price;
+    this.id = uuidv4();
   }
   save() {
     const appjsp = path.dirname(require.main.filename);
@@ -49,8 +53,24 @@ module.exports = class Product {
         console.log("here");
         cb("[]");
       } else {
-        console.log(filecontent.toString());
         cb(filecontent.toString());
+      }
+    });
+  }
+
+  static findbyid(id, cb) {
+    const appjsp = path.dirname(require.main.filename);
+    const p = path.join(appjsp, "data", "saaman.json");
+
+    fs.readFile(p, (err, filecontent) => {
+      if (err) {
+        console.log(err);
+      } else {
+        const product = JSON.parse(filecontent);
+        const productcontent = product.find((p) => {
+          return p.id === id;
+        });
+        cb(productcontent);
       }
     });
   }

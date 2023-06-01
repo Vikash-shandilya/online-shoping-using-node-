@@ -1,0 +1,22 @@
+extends ../layout/main_layout.pug  
+
+block style
+    
+    link(rel="stylesheet", href="/css/product.css")
+    link(rel="stylesheet", href="/css/forms.css")
+
+
+    
+block content 
+    main.centered
+        h1= product.title
+        hr
+        div.card__image
+            img(src=product.imageUrl, alt=product.title)
+        h2= product.price
+        p= product.description
+        form(action="/cart", method="post")
+            button.btn(type="submit") Add to Cart
+            input(type='hidden',name="productid",value=product.id)
+    script(src="/js/main.js")
+
