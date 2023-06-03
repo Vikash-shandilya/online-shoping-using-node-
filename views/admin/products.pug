@@ -7,7 +7,7 @@ block style
     
 block content 
     main
-        if data.length > 0
+        if Object.keys(data).length > 0
             div.grid
                 each product in data
                     article.card.product-item
@@ -16,13 +16,14 @@ block content
                         div.card__image
                             img(src=product.imageUrl, alt=product.title)
                         div.card__content
-                            h2.product__price $
-                            = product.price
+                            h2.product__price ₹
+                                = product.price
                             p.product__description= product.description
                         div.card__actions
-                            a.btn(href="/admin/edit-product") Edit
-                            form(action="/admin/delete-product", method="POST")
-                            button.btn(type="submit") Delete
+                            a.btn(href=`/admin/editproduct/${product.id}`) Edit
+                            form(action=`/admin/deleteproduct/${product.id}`, method="POST")
+                                
+                                button.btn(type="submit") Delete
         else
             h1 No Products Found!
 

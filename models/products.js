@@ -1,6 +1,8 @@
 const path = require("path");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
+
+const Cart = require("../models/cart");
 //es6 syntax
 const uniqueId = uuidv4();
 
@@ -12,6 +14,7 @@ module.exports = class Product {
     this.price = price;
     this.id = uuidv4();
   }
+
   save() {
     const appjsp = path.dirname(require.main.filename);
     const p = path.join(appjsp, "data", "saaman.json");
@@ -47,13 +50,18 @@ module.exports = class Product {
   static fetchall(cb) {
     const appjsp = path.dirname(require.main.filename);
     const p = path.join(appjsp, "data", "saaman.json");
-    console.log(p);
+
     fs.readFile(p, (err, filecontent) => {
       if (err) {
-        console.log("here");
+        console.log("Error reading file:", err);
         cb("[]");
       } else {
-        cb(filecontent.toString());
+        try {
+          cb(JSON.parse(filecontent));
+        } catch (parseError) {
+          console.log("Error parsing JSON:", parseError);
+          cb("[]");
+        }
       }
     });
   }
@@ -72,6 +80,42 @@ module.exports = class Product {
         });
         cb(productcontent);
       }
+    });
+  }
+
+  update(id) {
+    const appjsp = path.dirname(require.main.filename);
+    const p = path.join(appjsp, "data", "saaman.json");
+    let products = [];
+
+    fs.readFile(p, (err, filecontent) => {
+      if (!err) {
+        products = JSON.parse(filecontent);
+        const index = products.findIndex((p) => {
+          return p.id === id;
+        });
+
+        products[index] = this;
+        fs.writeFile(p, JSON.stringify(products), (err) => {
+          console.log(err);
+        });
+      }
+    });
+  }
+
+  static delete(id) {
+    const appjsp = path.dirname(require.main.filename);
+    const p = path.join(appjsp, "data", "saaman.json");
+    let products = [];
+    fs.readFile(p, (err, filecontent) => {
+      products = JSON.parse(filecontent);
+      const product = products.find((prod) => prod.id === id);
+      const updatedlist = products.filter((p) => p.id !== id);
+      fs.writeFile(p, JSON.stringify(updatedlist), (err) => {
+        if (!err) {
+          Cart.delete(id, product.price);
+        }
+      });
     });
   }
 };

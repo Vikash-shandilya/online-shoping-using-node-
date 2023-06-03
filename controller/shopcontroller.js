@@ -1,4 +1,6 @@
 const Product = require("../models/products");
+const cart = require("../models/cart");
+const Cart = require("../models/cart");
 
 exports.getProducts = (req, res, next) => {
   Product.fetchall((products) => {
@@ -24,9 +26,9 @@ exports.getproductid = (req, res, next) => {
 
 exports.getIndex = (req, res, next) => {
   Product.fetchall((products) => {
-    const parseddata = JSON.parse(products);
+    //const parseddata = JSON.parse(products);
     res.render("shop/index", {
-      data: parseddata,
+      data: products,
       pageTitle: "Shop",
       path: "/",
     });
@@ -34,15 +36,33 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  res.render("shop/cart", {
-    path: "/cart",
-    pageTitle: "Your Cart",
+  Cart.getCart((cartitem) => {
+    const cartfiles = [];
+    Product.fetchall((products) => {
+      for (item in products) {
+        console.log(item, "item");
+        const cartitemdata = cartitem.product.find((prod) => {
+          return prod.id === products[item].id;
+        });
+        if (cartitemdata) {
+          cartfiles.push({ data: products[item], qty: cartitemdata.qty });
+        }
+      }
+      console.log(cartfiles);
+      res.render("shop/cart", {
+        path: "/cart",
+        pageTitle: "Your Cart",
+        products: cartfiles,
+      });
+    });
   });
 };
 
 exports.posttocart = (req, res, next) => {
   const productid = req.body.productid;
-  console.log(productid);
+  Product.findbyid(productid, (product) => {
+    cart.addtocart(productid, product.price);
+  });
   res.redirect("/cart");
 };
 
@@ -57,5 +77,13 @@ exports.getCheckout = (req, res, next) => {
   res.render("shop/checkout", {
     path: "/checkout",
     pageTitle: "Checkout",
+  });
+};
+
+exports.postcartdeleteproduct = (req, res, next) => {
+  const id = req.body.productId;
+  Product.findbyid(id, (product) => {
+    Cart.delete(id, product.price);
+    res.redirect("/cart");
   });
 };

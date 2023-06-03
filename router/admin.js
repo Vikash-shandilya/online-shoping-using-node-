@@ -8,4 +8,10 @@ router.post("/ss", productcontroller.postproduct); //getpostproduct
 
 router.get("/products", productcontroller.showproduct);
 
+router.get("/editproduct/:productid", productcontroller.geteditproduct);
+
+router.post("/productedited", productcontroller.posteditproduct);
+
+router.post("/deleteproduct/:productid", productcontroller.deleteproduct);
+
 exports.router = router;

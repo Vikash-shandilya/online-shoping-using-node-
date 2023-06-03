@@ -1,11 +1,18 @@
-extends ../layout/main_layout.pug 
+extends ../layout/main_layout.pug
 
 block style
     link(rel="stylesheet", href="/css/forms.css")
     link(rel="stylesheet", href="/css/product.css")
 
-
-    
-block content 
-    main 
-        h1 nothing here
+block content
+    main
+        if products.length > 0
+            ul
+                each p in products
+                    li
+                        p= `${p.data.title} (${p.qty})`
+                        form(action="/cartdeleteitem" method="POST")
+                            input(type="hidden", name="productId", value=p.data.id)
+                            button.btn(type="submit") Delete
+        else
+            h1(style="color:red;") No Products in Cart!
