@@ -1,5 +1,6 @@
 const Product = require("../models/products");
 const Cart = require("../models/cart");
+
 exports.getproduct = (req, res, next) => {
   res.render("admin/addproduct", {
     path: "/admin/pp",
@@ -12,9 +13,18 @@ exports.postproduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const products = new Product(title, imageUrl, description, price);
-  products.save();
-  res.redirect("/");
+  Product.create({
+    title: title,
+    imageUrl: imageUrl,
+    price: price,
+    description: description,
+  })
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.showproduct = (req, res, next) => {

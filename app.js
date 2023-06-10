@@ -5,7 +5,8 @@ const path = require("path");
 const admindata = require("./router/admin");
 const shopRouter = require("./router/shop");
 
-const db = require("./utils/database");
+//import sequalize from database.js
+const sequelize = require("./utils/database");
 
 const app = express();
 app.set("view engine", "pug"); //statement tells Express to use the Pug template engine to generate the HTML output
@@ -15,15 +16,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/admin", admindata.router);
 
-//database
-db.execute("select * from products")
+app.use(shopRouter);
+
+sequelize
+  .sync()
   .then((result) => {
-    console.log(result[0][0]);
+    app.listen(8001);
   })
   .catch((err) => {
     console.log(err);
   });
-
-app.use(shopRouter);
-
-app.listen(8001);
