@@ -3,8 +3,7 @@ const cart = require("../models/cart");
 const Cart = require("../models/cart");
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchall((products) => {
-    const parseddata = JSON.parse(products);
+  Product.findAll().then((parseddata) => {
     res.render("shop/productlist", {
       data: parseddata,
       pagetitle: "All Products",
@@ -15,7 +14,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.getproductid = (req, res, next) => {
   const productid = req.params.productid; //this productid is defined in router shop.js
-  Product.findbyid(productid, (productcontent) => {
+  Product.findByPk(productid).then((productcontent) => {
     res.render("shop/productdetail", {
       product: productcontent,
       pagetitle: "Product detail",
@@ -25,14 +24,17 @@ exports.getproductid = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchall((products) => {
-    //const parseddata = JSON.parse(products);
-    res.render("shop/index", {
-      data: products,
-      pageTitle: "Shop",
-      path: "/",
+  Product.findAll()
+    .then((products) => {
+      res.render("shop/index", {
+        data: products,
+        pageTitle: "Shop",
+        path: "/",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
 };
 
 exports.getCart = (req, res, next) => {
