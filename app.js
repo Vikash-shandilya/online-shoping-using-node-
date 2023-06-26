@@ -9,6 +9,8 @@ const shopRouter = require("./router/shop");
 
 const products = require("./models/products");
 const User = require("./models/user");
+const Cart = require("./models/cart");
+const CartItem = require("./models/cart-item");
 
 //import sequalize from database.js
 const sequelize = require("./utils/database");
@@ -16,7 +18,7 @@ const sequelize = require("./utils/database");
 const app = express();
 app.set("view engine", "pug"); //statement tells Express to use the Pug template engine to generate the HTML output
 app.set("views", __dirname + "/views"); //we can use app.set('views','views') if views is in same dir as this file
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); //used for parsing the data
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
@@ -34,8 +36,12 @@ app.use("/admin", admindata.router);
 
 app.use(shopRouter);
 
-products.belongsTo(User);
-User.hasMany(products);
+products.belongsTo(User, { constraint: true, onDelete: "CASCADE" }); //user created this product
+User.hasMany(products); //ONE USER HAS MANY PRODUCT
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(products, { through: CartItem });
+products.belongsToMany(Cart, { through: CartItem });
 
 sequelize
   .sync()
@@ -49,6 +55,9 @@ sequelize
     return user;
   })
   .then((user) => {
+    return user.createCart();
+  })
+  .then((cart) => {
     app.listen(8001);
   })
   .catch((err) => {

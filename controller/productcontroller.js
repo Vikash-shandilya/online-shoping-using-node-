@@ -31,7 +31,7 @@ exports.postproduct = (req, res, next) => {
 
 exports.showproduct = (req, res, next) => {
   req.user
-    .getProducts()
+    .getProducts() //this will fetch products from user
     .then((filecontent) => {
       res.render("admin/products", {
         data: filecontent,
